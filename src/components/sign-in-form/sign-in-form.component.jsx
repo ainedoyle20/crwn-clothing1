@@ -47,12 +47,11 @@ const SignInForm = () => {
                 alert('no user associated with this email');
                 break;
               default:
-                console.log('Error logging user in: ', error.message);
+                console.log('Error logging user in.');
             }
         }
     }
 
-    console.log('running');
     return (
         <SignInFormContainer>
             <h2>Already have an account?</h2>

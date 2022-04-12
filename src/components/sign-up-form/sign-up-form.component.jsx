@@ -47,7 +47,7 @@ const SignUpForm = () => {
             if (error.code === 'auth/email-already-in-use') {
                 alert('This email is already in use.');
             } else {
-                console.log('error signing up user: ', error.message);
+                console.log('error signing up user.');
             }
         }
     }
