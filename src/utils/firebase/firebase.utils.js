@@ -45,7 +45,8 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore(app);
 
 // USER FUNCTIONS
-export const createUserDocumentFromAuth = async (userAuth, additionalData) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalData={}) => {
+    if (!userAuth) return;
     const userRef = doc(db, 'users', userAuth.uid);
     const userSnapshot = await getDoc(userRef);
 
@@ -65,7 +66,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalData) => {
         }
     }
 
-    return userRef;
+    return userSnapshot;
 }
 
 export const signUserInWithEmailAndPassword = async (email, password) => {
@@ -74,8 +75,10 @@ export const signUserInWithEmailAndPassword = async (email, password) => {
     return await signInWithEmailAndPassword(auth, email, password);
 }
 
-export const signUpWithEmailAndPassword = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+export const signUpWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
+
+    return await createUserWithEmailAndPassword(auth, email, password);
 }
 
 export const signOutUser = async () => {
@@ -113,3 +116,16 @@ export const getCategoriesAndDocuments = async () => {
 
     // return categoryMap;
 }
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(
+        auth,
+        (userAuth) => {
+          unsubscribe();
+          resolve(userAuth);
+        },
+        reject
+      );
+    });
+};
