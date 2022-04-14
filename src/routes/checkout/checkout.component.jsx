@@ -1,8 +1,11 @@
 import { useSelector } from 'react-redux';
+import { stripePromise } from '../../utils/stripe/stripe.utils';
+import {Elements } from '@stripe/react-stripe-js';
 
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selectors';
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
+import PaymentForm from '../../components/payment-form/payment-form.component';
 
 import {
     CheckoutContainer,
@@ -41,6 +44,11 @@ const Checkout = () => {
             ))}
 
             <CheckoutTotal>TOTAL: ${cartTotal}</CheckoutTotal>
+
+            <Elements stripe={stripePromise}>
+                <PaymentForm />
+            </Elements>
+            
         </CheckoutContainer>
     );
 }
