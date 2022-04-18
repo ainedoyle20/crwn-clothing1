@@ -1,6 +1,4 @@
 import { useSelector } from 'react-redux';
-import { stripePromise } from '../../utils/stripe/stripe.utils';
-import {Elements } from '@stripe/react-stripe-js';
 
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selectors';
 
@@ -45,9 +43,7 @@ const Checkout = () => {
 
             <CheckoutTotal>TOTAL: ${cartTotal}</CheckoutTotal>
 
-            <Elements stripe={stripePromise}>
-                <PaymentForm />
-            </Elements>
+            <PaymentForm />
             
         </CheckoutContainer>
     );
