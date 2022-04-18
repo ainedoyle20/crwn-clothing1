@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addItemToCart, removeItemFromCart, clearItemFromCart } from '../../store/cart/cart.actions';
@@ -24,11 +24,11 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
-  const removeItemHandler = () => dispatch(removeItemFromCart(cartItems, cartItem));
+  const removeItemHandler = useCallback(() => dispatch(removeItemFromCart(cartItems, cartItem)), [cartItems]);
 
-  const addItemHandler = () => dispatch(addItemToCart(cartItems, cartItem));
+  const addItemHandler = useCallback(() => dispatch(addItemToCart(cartItems, cartItem)), [cartItems]);
 
-  const clearItemHandler = () => dispatch(clearItemFromCart(cartItems, cartItem));
+  const clearItemHandler = useCallback(() => dispatch(clearItemFromCart(cartItems, cartItem)), [cartItems]);
 
   return (
     <CheckoutItemContainer>
@@ -51,6 +51,6 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
       </RemoveButton>
     </CheckoutItemContainer>
   );
-}
+};
 
 export default CheckoutItem;
