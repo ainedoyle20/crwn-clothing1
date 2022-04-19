@@ -1,12 +1,21 @@
 import styled from 'styled-components';
 
 export const CheckoutContainer = styled.div`
-    width: 55%;
+    width: 90%;
     min-height: 90vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 50px auto 0;
+    margin: 50px auto;
+    
+    @media screen and (min-width: 500px) {
+        width: 70%;
+    }
+
+    @media screen and (min-width: 800px) {
+        width: 55%;
+        margin: 50px auto 0;
+    }
 `;
 
 export const CheckoutHeader = styled.div`

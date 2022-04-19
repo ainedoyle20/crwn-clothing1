@@ -3,10 +3,15 @@ import styled from 'styled-components';
 export const SignInFormContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 380px;
+    width: 340px;
+    margin-bottom: 40px;
 
     h2 {
         margin: 10px 0;
+    }
+
+    @media screen and (min-width: 450px) {
+        width: 380px;
     }
 `;
 

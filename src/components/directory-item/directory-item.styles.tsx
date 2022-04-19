@@ -26,8 +26,9 @@ export const DirectoryItemBody = styled.div`
 
   h2 {
     font-weight: bold;
-    margin: 0 6px 0;
-    font-size: 22px;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
     color: #4a4a4a;
     text-transform: uppercase;
   }
@@ -35,6 +36,14 @@ export const DirectoryItemBody = styled.div`
   p {
     font-weight: lighter;
     font-size: 16px;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media screen and (min-width: 500px) {
+    h2 {
+      font-size: 22px;
+    }
   }
 `;
 
@@ -43,38 +52,43 @@ type DirectoryItemContainerProps = {
 }
 
 export const DirectoryItemContainer = styled.div<DirectoryItemContainerProps>`
-    min-width: 30%;
+  min-width: 30%;
+  height: 240px;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  margin: 0 7.5px 15px;
+  overflow: hidden;
+
+  &.large {
+      height: 380px;
+  }
+
+  &:first-child {
+      margin-right: 7.5px;
+  }
+
+  &:last-child {
+      margin-left: 7.5px;
+  }
+
+  &:hover {
+      cursor: pointer;
+
+      ${BackgroundImage} {
+          transform: scale(1.1);
+          transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+      }
+
+      ${DirectoryItemBody} {
+          opacity: 0.9;
+      }
+  }
+
+  @media screen and (min-width: 600px) {
     height: ${({ size }) => size ? '360px' : '240px'};
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid black;
-    margin: 0 7.5px 15px;
-    overflow: hidden;
-
-    &.large {
-        height: 380px;
-    }
-
-    &:first-child {
-        margin-right: 7.5px;
-    }
-
-    &:last-child {
-        margin-left: 7.5px;
-    }
-
-    &:hover {
-        cursor: pointer;
-
-        ${BackgroundImage} {
-            transform: scale(1.1);
-            transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
-        }
-
-        ${DirectoryItemBody} {
-            opacity: 0.9;
-        }
-    }
+  }
+  
 `;

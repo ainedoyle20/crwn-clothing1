@@ -7,6 +7,7 @@ export const ProductCardContainer = styled.div`
     height: 350px;
     align-items: center;
     position: relative;
+    margin-bottom: 15px;
 
     img { 
         width: 100%;
@@ -17,22 +18,32 @@ export const ProductCardContainer = styled.div`
 
     button { 
         width: 80%;
-        opacity: 0.7;
+        opacity: 0.9;
         position: absolute;
         top: 255px;
-        display: none;
+        display: block;
     } 
 
-    &:hover { 
-        img { 
-            opacity: 0.8;
-        } 
-        
+    @media screen and (min-width: 900px) {
         button { 
-            opacity: 0.85;
-            display: flex;
+            width: 80%;
+            opacity: 0.7;
+            position: absolute;
+            top: 255px;
+            display: none;
+        }
+
+        &:hover { 
+            img { 
+                opacity: 0.8;
+            } 
+            
+            button { 
+                opacity: 0.85;
+                display: flex;
+            } 
         } 
-    } 
+    }
 `;
 
 export const ProductCardFooter = styled.div`

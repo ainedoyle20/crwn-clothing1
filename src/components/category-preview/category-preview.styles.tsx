@@ -16,6 +16,20 @@ export const CategoryPreviewTitle = styled(Link)`
 
 export const PreviewContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 20px;   
+    grid-template-columns: repeat(0, 1fr);
+
+    @media screen and (min-width: 450px) {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 15px;  
+    }
+    
+    @media screen and (min-width: 750px) {
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 20px; 
+    }
+
+    @media screen and (min-width: 1000px) {
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 20px; 
+    }
 `;
