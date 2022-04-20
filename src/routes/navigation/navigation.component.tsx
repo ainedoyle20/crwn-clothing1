@@ -7,7 +7,7 @@ import { signOutStart } from '../../store/user/user.actions';
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 
 import { selectCurrentUser } from '../../store/user/user.selectors';
-import { selectIsCartOpen } from '../../store/cart/cart.selectors';
+import { selectIsCartOpen, selectCartItems } from '../../store/cart/cart.selectors';
 
 import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
@@ -23,8 +23,13 @@ const Navigation = () => {
     const dispatch = useDispatch();
     const currentUser = useSelector(selectCurrentUser);
     const isCartOpen = useSelector(selectIsCartOpen);
+    const cartItems = useSelector(selectCartItems);
 
-    const signOutUserHandler = () => dispatch(signOutStart());
+    const signOutUserHandler = () => {
+        if (currentUser !== null && currentUser.id !== undefined) {
+           dispatch(signOutStart(currentUser.id, cartItems)); 
+        }
+    };
 
     return (
         <Fragment>
@@ -35,6 +40,7 @@ const Navigation = () => {
                 
                 <NavLinksContainer>
                     <NavLink to="/shop">Shop</NavLink>
+                    <NavLink to="/order-history">Orders</NavLink>
                     {currentUser
                     ? <NavLink as="span" onClick={signOutUserHandler}>Sign Out</NavLink>
                     : <NavLink to="/auth">SignIn</NavLink>

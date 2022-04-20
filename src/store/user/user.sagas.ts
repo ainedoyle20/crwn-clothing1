@@ -12,7 +12,10 @@ import {
   EmailSignInStart,
   SignUpStart,
   SignUpSuccess,
+  SignOutStart,
 } from './user.actions';
+
+import { clearCartOnSignOutSuccess } from '../cart/cart.actions';
 
 import {User} from 'firebase/auth';
 import {
@@ -22,6 +25,7 @@ import {
   signUserInWithEmailAndPassword,
   signUpWithEmailAndPassword,
   signOutUser,
+  setCartItemsInFirestore,
 } from '../../utils/firebase/firebase.utils';
 import { AdditionalInformation } from '../../utils/firebase/firebase.types';
 
@@ -98,13 +102,18 @@ export function* signUp({ payload: { email, password, displayName } }: SignUpSta
   }
 }
 
-export function* signOut() {
+export function* signOut({ payload: {userId, cartItems}}: SignOutStart) {
   try {
+    yield* call(setCartItemsInFirestore, userId, cartItems);
     yield* call(signOutUser);
     yield* put(signOutSuccess());
   } catch (error) {
     yield* put(signOutFailed(error as Error));
   }
+}
+
+export function* emptyCartOnSignOutSuccess() {
+  yield* put(clearCartOnSignOutSuccess());
 }
 
 export function* signInAfterSignUp({ payload: { user, additionalDetails } }: SignUpSuccess) {
@@ -135,6 +144,10 @@ export function* onSignOutStart() {
   yield* takeLatest(UserActionTypes.SIGN_OUT_START, signOut);
 }
 
+export function* onSignOutSuccess() {
+  yield* takeLatest(UserActionTypes.SIGN_OUT_SUCCESS, emptyCartOnSignOutSuccess)
+}
+
 export function* userSagas() {
   yield* all([
     call(onCheckUserSession),
@@ -143,5 +156,6 @@ export function* userSagas() {
     call(onSignUpStart),
     call(onSignUpSuccess),
     call(onSignOutStart),
+    call(onSignOutSuccess),
   ]);
 }

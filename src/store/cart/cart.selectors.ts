@@ -11,6 +11,16 @@ export const selectIsCartOpen = createSelector(
     (cartSlice) => cartSlice.isCartOpen,
 );
 
+export const selectConfirmationOrders = createSelector(
+    [selectCartReducer],
+    (cartSlice) => cartSlice.confirmationOrders,
+);
+
+export const selectConfirmationTotal = createSelector(
+    [selectConfirmationOrders],
+    (confirmationOrders) => confirmationOrders.reduce((total, cartItem) => total + cartItem.quantity * cartItem.price, 0),
+);
+
 export const selectCartItems = createSelector(
     [selectCartReducer],
     (cartSlice) => cartSlice.cartItems,

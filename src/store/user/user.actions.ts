@@ -4,6 +4,7 @@ import { createAction, Action, ActionWithPayload, withMatcher } from '../../util
 
 import { User } from 'firebase/auth';
 import { AdditionalInformation, UserData } from '../../utils/firebase/firebase.types';
+import { CartItem } from "../cart/cart.types";
 
 export type SetCurrentUser = ActionWithPayload<USER_ACTION_TYPES.SET_CURRENT_USER, UserData>;
 
@@ -15,7 +16,7 @@ export type EmailSignInStart = ActionWithPayload<USER_ACTION_TYPES.EMAIL_SIGN_IN
 
 export type SignUpStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_START, {email: string; password: string; displayName:string; }>
 
-export type SignOutStart = Action<USER_ACTION_TYPES.SIGN_OUT_START>;
+export type SignOutStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_START, {userId: string, cartItems: CartItem[] | []}>;
 
 export type SignInSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_IN_SUCCESS, UserData>;
 
@@ -41,7 +42,7 @@ export const googleSignInStart = withMatcher((): GoogleSignInStart =>
 export const emailSignInStart = withMatcher((email: string, password: string): EmailSignInStart => 
     createAction(USER_ACTION_TYPES.EMAIL_SIGN_IN_START, {email, password}));
 
-export const signInSuccess = withMatcher((user: UserData & {id: string;}): SignInSuccess => 
+export const signInSuccess = withMatcher((user: UserData): SignInSuccess => 
     createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user));
 
 export const signInFailed = withMatcher((error: Error): SignInFailed => 
@@ -56,8 +57,8 @@ export const signUpSuccess = withMatcher((user: User, additionalDetails: Additio
 export const signUpFailed = withMatcher((error: Error): SignUpFailed => 
     createAction(USER_ACTION_TYPES.SIGN_UP_FAILED, error));
 
-export const signOutStart = withMatcher((): SignOutStart => 
-    createAction(USER_ACTION_TYPES.SIGN_OUT_START));
+export const signOutStart = withMatcher((userId: string, cartItems: CartItem[] | []): SignOutStart => 
+    createAction(USER_ACTION_TYPES.SIGN_OUT_START, {userId, cartItems}));
 
 export const signOutSuccess = withMatcher((): SignOutSuccess => 
     createAction(USER_ACTION_TYPES.SIGN_OUT_SUCCESS));

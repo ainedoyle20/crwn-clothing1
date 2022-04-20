@@ -17,6 +17,7 @@ import {
     doc,
     getDoc,
     setDoc,
+    updateDoc,
     collection,
     writeBatch,
     query,
@@ -24,8 +25,9 @@ import {
     QueryDocumentSnapshot
 } from 'firebase/firestore';
 
+import { CartItem } from "../../store/cart/cart.types";
 import { Category } from '../../store/categories/categories.types';
-import { ObjectToAdd, AdditionalInformation, UserData } from './firebase.types';
+import { ObjectToAdd, AdditionalInformation, UserData, OrderData } from './firebase.types';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -138,4 +140,75 @@ export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
     // }, {});
 
     // return categoryMap;
+}
+
+export const getCartItemsFromFirestore = async (userId: string): Promise<CartItem[] | []> => {
+    const cartRef = doc(db, 'cart', userId);
+    const cartSnapshot = await getDoc(cartRef);
+
+    if (!cartSnapshot.exists()) {
+        console.log('cartSnapshot does NOT exist!');
+       return []; 
+    }
+    
+    const cart = cartSnapshot.data();
+    const cartItems = cart["cartItems"];
+    return cartItems as CartItem[];
+}
+
+export const setCartItemsInFirestore = async (userId:string, cartItems: CartItem[] | []): Promise<void> => {
+    const cartRef = doc(db, 'cart', userId);
+
+    try {
+        await setDoc(cartRef, {
+            cartItems: cartItems,
+        });
+    } catch (error) {
+        console.log('error setting cart items in firestore: ', error);
+    }
+}
+
+export const getOrdersFromFirestore = async (userId: string): Promise<OrderData[]> => {
+    const ordersRef = doc(db, 'orders', userId);
+    const ordersSnapshot = await getDoc(ordersRef);
+
+    if (!ordersSnapshot.exists()) {
+        return [];
+    }
+
+    const ordersArray = ordersSnapshot.data()['orders'] as OrderData[];
+    return ordersArray;
+}
+
+export const setOrdersInFirestore = async (userId: string, createdAt: string, dateString: string, total: number, confirmedOrders: CartItem[]): Promise<void> => {
+    const ordersRef = doc(db, 'orders', userId);
+    const ordersSnapshot = await getDoc(ordersRef);
+
+    const uidCreator = () => {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    const orderId = uidCreator();
+
+    if (!ordersSnapshot.exists()) {
+        try {
+            await setDoc(ordersRef, {
+                orders: [{id: orderId, createdAt, dateString, total, confirmedOrders}],
+            });
+        } catch (error) {
+            console.log('error setting cart items in firestore: ', error);
+        }
+    } else {
+        const ordersArray = ordersSnapshot.data()['orders'];
+        try {
+            await updateDoc(ordersRef, {
+                orders: [
+                    ...ordersArray,
+                    {id: orderId, createdAt, dateString, total, confirmedOrders},
+                ],
+            });
+        } catch (error) {
+            console.log('error setting cart items in firestore: ', error);
+        }
+    }
 }
