@@ -6,12 +6,20 @@ export const CategoryPreviewContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;
+
+    h2 {
+        font-size: 28px;
+        padding: 0;
+        margin: 0;
+        margin-top: 30px;
+        cursor: default;
+    }
 `;
 
 export const CategoryPreviewTitle = styled(Link)`
-    font-size: 28px;
     margin-bottom: 25px;
     cursor: pointer;
+    text-decoration: underline;
 `;
 
 export const PreviewContainer = styled.div`

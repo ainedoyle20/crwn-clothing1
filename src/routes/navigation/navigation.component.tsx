@@ -41,6 +41,7 @@ const Navigation = () => {
                 <NavLinksContainer>
                     <NavLink to="/shop">Shop</NavLink>
                     <NavLink to="/order-history">Orders</NavLink>
+                    <NavLink to="/contact">Contact</NavLink>
                     {currentUser
                     ? <NavLink as="span" onClick={signOutUserHandler}>Sign Out</NavLink>
                     : <NavLink to="/auth">SignIn</NavLink>

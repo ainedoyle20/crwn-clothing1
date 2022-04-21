@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 import { setOrdersInFirestore } from "../../utils/firebase/firebase.utils";
 
@@ -16,13 +17,21 @@ import {
     ConfirmationTotal,
 } from './payment-confirmation.styles';
 
+
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const PaymentConfirmation = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const confirmedOrders = useSelector(selectConfirmationOrders);
     const confirmationTotal = useSelector(selectConfirmationTotal);
     const currentUser = useSelector(selectCurrentUser);
+
+    useEffect(() => {
+        if (confirmedOrders.length === 0) {
+            navigate('/');
+        }
+    }, [confirmedOrders]);
 
     const generateDateString = () => {
         const date = new Date();

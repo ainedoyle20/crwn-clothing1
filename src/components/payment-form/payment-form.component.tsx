@@ -66,10 +66,10 @@ const PaymentForm = () => {
             if (paymentResult.paymentIntent.status === 'succeeded') {
                 // will also set cartItems to []
                 dispatch(setConfirmationOrders(cartItems));
-
+                
                 alert('Payment Successful!');
                 
-                navigate('/payment-confirmation');
+                navigate('/payment-confirmation');  
             }
         }
     }

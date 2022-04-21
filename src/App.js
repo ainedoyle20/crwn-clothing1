@@ -19,6 +19,7 @@ const Authentication = lazy(() => import('./routes/authentication/authentication
 const Checkout = lazy(() => import('./routes/checkout/checkout.component'));
 const PaymentConfirmation = lazy(() => import('./routes/payment-confirmation/payment-confirmation.component'));
 const OrderHistory = lazy(() => import('./routes/order-history/order-history.component'));
+const Contact = lazy(() => import('./routes/contact/contact.component'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="checkout" element={<Checkout />} />
           <Route path="payment-confirmation" element={<PaymentConfirmation />} />
           <Route path="order-history" element={<OrderHistory />} />
+          <Route path="contact" element={<Contact />} />
         </Route>
       </Routes>
     </Suspense>
